@@ -13,7 +13,7 @@
   <rect width="1200" height="630" fill="url(#bg-gradient)"/>
 
   <!-- Celtics Logo -->
-  <image x="520" y="100" width="160" height="160" href="https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg"/>
+  <image x="500" y="80" width="200" height="200" href="celtics-logo.png" preserveAspectRatio="xMidYMid meet"/>
 
   <!-- Main Title -->
   <text x="600" y="330" text-anchor="middle" fill="white" font-size="72" font-weight="bold" font-family="Arial, sans-serif" filter="url(#shadow)">🏀 When Celtics?</text>
