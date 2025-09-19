@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Celtics App</title>
+</head>
+<body>
+    <h1>Testing Celtics App JavaScript</h1>
+    <div id="result"></div>
+
+    <script>
+        const CELTICS_TEAM_ID = '1610612738';
+
+        function getSampleUpcomingGame() {
+            const sampleGames = [
+                {
+                    date: '2025-01-20T01:00:00.000Z',
+                    home_team: {
+                        id: '1610612738',
+                        city: 'Boston',
+                        name: 'Celtics'
+                    },
+                    visitor_team: {
+                        id: '1610612747',
+                        city: 'Los Angeles',
+                        name: 'Lakers'
+                    }
+                }
+            ];
+            return sampleGames;
+        }
+
+        function findNextGame(games) {
+            const now = new Date();
+            const upcomingGames = games.filter(game => {
+                const gameDate = new Date(game.date);
+                return gameDate > now;
+            });
+
+            if (upcomingGames.length === 0) {
+                return null;
+            }
+
+            upcomingGames.sort((a, b) => new Date(a.date) - new Date(b.date));
+            return upcomingGames[0];
+        }
+
+        const games = getSampleUpcomingGame();
+        const nextGame = findNextGame(games);
+
+        document.getElementById('result').innerHTML = `
+            <h2>Next Game Found:</h2>
+            <p>Date: ${nextGame.date}</p>
+            <p>Home: ${nextGame.home_team.city} ${nextGame.home_team.name}</p>
+            <p>Away: ${nextGame.visitor_team.city} ${nextGame.visitor_team.name}</p>
+        `;
+    </script>
+</body>
+</html>

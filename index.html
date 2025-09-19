@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>When Celtics? | Next Boston Celtics Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏀 When Celtics?</h1>
+            <p>Next Boston Celtics NBA Game</p>
+        </header>
+
+        <main>
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>Loading next game...</p>
+            </div>
+
+            <div id="game-info" class="game-info hidden">
+                <div class="game-card">
+                    <div class="teams">
+                        <div class="team celtics">
+                            <img src="https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg" alt="Boston Celtics" class="team-logo">
+                            <span class="team-name">Celtics</span>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="team opponent">
+                            <img id="opponent-logo" src="" alt="" class="team-logo">
+                            <span id="opponent-name" class="team-name"></span>
+                        </div>
+                    </div>
+
+                    <div class="game-details">
+                        <div class="date-time">
+                            <div id="game-date" class="date"></div>
+                            <div id="game-time" class="time"></div>
+                        </div>
+                        <div id="game-location" class="location"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="error" class="error hidden">
+                <p>Unable to load game information. Please try again later.</p>
+                <button onclick="loadNextGame()">Retry</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>Boston Celtics Schedule Tracker</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
