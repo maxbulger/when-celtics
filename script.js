@@ -159,56 +159,44 @@ async function fetchCelticsGames() {
 }
 
 function getSampleUpcomingGame() {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(20, 0, 0, 0);
-
-    const nextWeek = new Date();
-    nextWeek.setDate(nextWeek.getDate() + 7);
-    nextWeek.setHours(19, 30, 0, 0);
-
-    const twoWeeks = new Date();
-    twoWeeks.setDate(twoWeeks.getDate() + 14);
-    twoWeeks.setHours(20, 0, 0, 0);
-
     const sampleGames = [
         {
-            date: tomorrow.toISOString(),
+            date: '2025-10-08T23:00:00.000Z',
             home_team: {
                 id: '1610612738',
                 city: 'Boston',
                 name: 'Celtics'
             },
             visitor_team: {
-                id: '1610612747',
-                city: 'Los Angeles',
-                name: 'Lakers'
+                id: '1610612763',
+                city: 'Memphis',
+                name: 'Grizzlies'
             }
         },
         {
-            date: nextWeek.toISOString(),
+            date: '2025-10-11T23:00:00.000Z',
             home_team: {
-                id: '1610612752',
-                city: 'New York',
-                name: 'Knicks'
-            },
-            visitor_team: {
-                id: '1610612738',
-                city: 'Boston',
-                name: 'Celtics'
-            }
-        },
-        {
-            date: twoWeeks.toISOString(),
-            home_team: {
-                id: '1610612738',
-                city: 'Boston',
-                name: 'Celtics'
-            },
-            visitor_team: {
                 id: '1610612755',
                 city: 'Philadelphia',
                 name: '76ers'
+            },
+            visitor_team: {
+                id: '1610612738',
+                city: 'Boston',
+                name: 'Celtics'
+            }
+        },
+        {
+            date: '2025-10-15T23:30:00.000Z',
+            home_team: {
+                id: '1610612738',
+                city: 'Boston',
+                name: 'Celtics'
+            },
+            visitor_team: {
+                id: '1610612752',
+                city: 'New York',
+                name: 'Knicks'
             }
         }
     ];
