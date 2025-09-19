@@ -12,9 +12,8 @@
   <!-- Background -->
   <rect width="1200" height="630" fill="url(#bg-gradient)"/>
 
-  <!-- Celtics Logo placeholder circle -->
-  <circle cx="600" cy="180" r="80" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.4)" stroke-width="3"/>
-  <text x="600" y="190" text-anchor="middle" fill="white" font-size="24" font-family="Arial, sans-serif">🍀</text>
+  <!-- Celtics Logo -->
+  <image x="520" y="100" width="160" height="160" href="https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg"/>
 
   <!-- Main Title -->
   <text x="600" y="330" text-anchor="middle" fill="white" font-size="72" font-weight="bold" font-family="Arial, sans-serif" filter="url(#shadow)">🏀 When Celtics?</text>
