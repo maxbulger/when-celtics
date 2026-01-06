@@ -117,6 +117,12 @@ function displayGameInfo(game) {
     document.getElementById('game-time').textContent = formatTime(game.date);
     document.getElementById('game-location').textContent = location;
 
+    // Update record if available
+    if (game.celtics_record) {
+        const footer = document.querySelector('footer p');
+        footer.textContent = `The road to Banner 19: ${game.celtics_record.wins}-${game.celtics_record.losses}`;
+    }
+
     showGameInfo();
 }
 
@@ -136,19 +142,29 @@ async function fetchCelticsGames() {
         );
 
         if (celticsGames.length > 0) {
-            return celticsGames.map(game => ({
-                date: game.gameTimeUTC,
-                home_team: {
-                    id: game.homeTeam.teamId,
-                    city: game.homeTeam.teamCity,
-                    name: game.homeTeam.teamName
-                },
-                visitor_team: {
-                    id: game.awayTeam.teamId,
-                    city: game.awayTeam.teamCity,
-                    name: game.awayTeam.teamName
-                }
-            }));
+            return celticsGames.map(game => {
+                // Find Celtics team data to get record
+                const celticsTeam = game.homeTeam.teamId === CELTICS_TEAM_ID ?
+                    game.homeTeam : game.awayTeam;
+
+                return {
+                    date: game.gameTimeUTC,
+                    home_team: {
+                        id: game.homeTeam.teamId,
+                        city: game.homeTeam.teamCity,
+                        name: game.homeTeam.teamName
+                    },
+                    visitor_team: {
+                        id: game.awayTeam.teamId,
+                        city: game.awayTeam.teamCity,
+                        name: game.awayTeam.teamName
+                    },
+                    celtics_record: {
+                        wins: celticsTeam.wins,
+                        losses: celticsTeam.losses
+                    }
+                };
+            });
         }
 
         return getSampleUpcomingGame();
@@ -159,9 +175,18 @@ async function fetchCelticsGames() {
 }
 
 function getSampleUpcomingGame() {
+    // Generate sample games with future dates
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const nextWeek = new Date(today);
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    const twoWeeks = new Date(today);
+    twoWeeks.setDate(twoWeeks.getDate() + 14);
+
     const sampleGames = [
         {
-            date: '2025-10-08T23:00:00.000Z',
+            date: tomorrow.toISOString(),
             home_team: {
                 id: '1610612738',
                 city: 'Boston',
@@ -174,7 +199,7 @@ function getSampleUpcomingGame() {
             }
         },
         {
-            date: '2025-10-11T23:00:00.000Z',
+            date: nextWeek.toISOString(),
             home_team: {
                 id: '1610612755',
                 city: 'Philadelphia',
@@ -187,7 +212,7 @@ function getSampleUpcomingGame() {
             }
         },
         {
-            date: '2025-10-15T23:30:00.000Z',
+            date: twoWeeks.toISOString(),
             home_team: {
                 id: '1610612738',
                 city: 'Boston',
