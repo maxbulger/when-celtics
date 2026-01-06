@@ -1,4 +1,4 @@
-const CELTICS_TEAM_ID = '1610612738';
+const CELTICS_TEAM_ID = 1610612738;
 const NBA_API_BASE_URL = 'https://stats.nba.com/stats';
 const CORS_PROXY = 'https://corsproxy.io/?';
 
@@ -252,12 +252,12 @@ function getSampleUpcomingGame() {
         {
             date: tomorrow.toISOString(),
             home_team: {
-                id: '1610612738',
+                id: 1610612738,
                 city: 'Boston',
                 name: 'Celtics'
             },
             visitor_team: {
-                id: '1610612763',
+                id: 1610612763,
                 city: 'Memphis',
                 name: 'Grizzlies'
             }
@@ -265,12 +265,12 @@ function getSampleUpcomingGame() {
         {
             date: nextWeek.toISOString(),
             home_team: {
-                id: '1610612755',
+                id: 1610612755,
                 city: 'Philadelphia',
                 name: '76ers'
             },
             visitor_team: {
-                id: '1610612738',
+                id: 1610612738,
                 city: 'Boston',
                 name: 'Celtics'
             }
@@ -278,12 +278,12 @@ function getSampleUpcomingGame() {
         {
             date: twoWeeks.toISOString(),
             home_team: {
-                id: '1610612738',
+                id: 1610612738,
                 city: 'Boston',
                 name: 'Celtics'
             },
             visitor_team: {
-                id: '1610612752',
+                id: 1610612752,
                 city: 'New York',
                 name: 'Knicks'
             }
