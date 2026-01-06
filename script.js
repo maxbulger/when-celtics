@@ -1,5 +1,6 @@
 const CELTICS_TEAM_ID = '1610612738';
 const NBA_API_BASE_URL = 'https://stats.nba.com/stats';
+const CORS_PROXY = 'https://corsproxy.io/?';
 
 const teamLogos = {
     'Atlanta Hawks': 'https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg',
@@ -128,7 +129,7 @@ function displayGameInfo(game) {
 
 async function fetchCelticsSchedule() {
     try {
-        const response = await fetch('https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json');
+        const response = await fetch(CORS_PROXY + encodeURIComponent('https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json'));
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -186,7 +187,7 @@ async function fetchCelticsSchedule() {
 
 async function fetchTodaysScoreboard() {
     try {
-        const response = await fetch('https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json');
+        const response = await fetch(CORS_PROXY + encodeURIComponent('https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json'));
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
