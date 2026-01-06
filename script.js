@@ -126,7 +126,65 @@ function displayGameInfo(game) {
     showGameInfo();
 }
 
-async function fetchCelticsGames() {
+async function fetchCelticsSchedule() {
+    try {
+        const response = await fetch('https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json');
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const allGames = [];
+
+        // Extract all games from all dates
+        if (data.leagueSchedule && data.leagueSchedule.gameDates) {
+            data.leagueSchedule.gameDates.forEach(dateObj => {
+                if (dateObj.games) {
+                    dateObj.games.forEach(game => {
+                        if (game.homeTeam.teamId === CELTICS_TEAM_ID ||
+                            game.awayTeam.teamId === CELTICS_TEAM_ID) {
+                            allGames.push(game);
+                        }
+                    });
+                }
+            });
+        }
+
+        if (allGames.length > 0) {
+            return allGames.map(game => {
+                // Find Celtics team data to get record
+                const celticsTeam = game.homeTeam.teamId === CELTICS_TEAM_ID ?
+                    game.homeTeam : game.awayTeam;
+
+                return {
+                    date: game.gameDateTimeUTC || game.gameDateUTC,
+                    home_team: {
+                        id: game.homeTeam.teamId,
+                        city: game.homeTeam.teamCity,
+                        name: game.homeTeam.teamName
+                    },
+                    visitor_team: {
+                        id: game.awayTeam.teamId,
+                        city: game.awayTeam.teamCity,
+                        name: game.awayTeam.teamName
+                    },
+                    celtics_record: {
+                        wins: celticsTeam.wins || 0,
+                        losses: celticsTeam.losses || 0
+                    }
+                };
+            });
+        }
+
+        throw new Error('No Celtics games found in schedule');
+    } catch (error) {
+        console.error('Error fetching schedule, trying today\'s scoreboard:', error);
+        return fetchTodaysScoreboard();
+    }
+}
+
+async function fetchTodaysScoreboard() {
     try {
         const response = await fetch('https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json');
 
@@ -167,7 +225,7 @@ async function fetchCelticsGames() {
             });
         }
 
-        return getSampleUpcomingGame();
+        throw new Error('No Celtics games found today');
     } catch (error) {
         console.error('Error fetching from NBA API, using sample data:', error);
         return getSampleUpcomingGame();
@@ -249,8 +307,8 @@ async function loadNextGame() {
     showLoading();
 
     try {
-        console.log('Fetching Celtics games...');
-        const games = await fetchCelticsGames();
+        console.log('Fetching Celtics schedule...');
+        const games = await fetchCelticsSchedule();
         console.log('Games fetched:', games);
 
         const nextGame = findNextGame(games);

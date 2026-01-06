@@ -17,19 +17,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Data Flow
 
-1. On page load, `fetchCelticsGames()` attempts to fetch from NBA's live scoreboard API
-2. If the API fails or returns no Celtics games, falls back to `getSampleUpcomingGame()` with hardcoded sample data
-3. `findNextGame()` filters games to find the next upcoming game after current time
-4. `displayGameInfo()` updates the DOM with opponent, date/time, and location
+1. On page load, `fetchCelticsSchedule()` attempts to fetch the full season schedule from NBA's static data API
+2. If the schedule API fails, falls back to `fetchTodaysScoreboard()` which checks today's live scoreboard
+3. If both APIs fail, falls back to `getSampleUpcomingGame()` with dynamically-generated sample data
+4. `findNextGame()` filters games to find the next upcoming game after current time
+5. `displayGameInfo()` updates the DOM with opponent, date/time, location, and current record
 
 ### Key Design Decisions
 
 **No Build System**: This is intentional - the app is designed to be deployable as static files with no compilation step.
 
-**Fallback Data Strategy**: The app includes sample game data (`getSampleUpcomingGame()`) that activates when:
-- NBA API is unreachable
-- API response is malformed
-- No games are found for today
+**Fallback Strategy**: The app has a three-tier fallback system:
+1. Primary: Full season schedule API (finds next game regardless of date)
+2. Secondary: Today's scoreboard API (for live record data when schedule fails)
+3. Tertiary: Dynamically-generated sample data with future dates
 
 **Team Logo Mapping**: The `teamLogos` object (script.js:4-39) maps team names to NBA CDN logo URLs. It includes both full names ("Los Angeles Lakers") and short names ("Lakers", "76ers") for flexible matching.
 
@@ -66,16 +67,24 @@ Open `test.html` to verify the game finding algorithm with sample data.
 
 ## API Integration
 
-**Current API**: `https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json`
+**Primary API**: `https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json`
 
-This endpoint returns all NBA games for the current day. The app filters for games where either `homeTeam.teamId` or `awayTeam.teamId` matches the Celtics team ID.
+This endpoint contains the full season schedule with all games. The app:
+- Iterates through `leagueSchedule.gameDates[]` array
+- Filters for games where either `homeTeam.teamId` or `awayTeam.teamId` matches the Celtics team ID (1610612738)
+- Extracts wins/losses from the Celtics team object for the current record
 
-**Data Transform**: NBA API response is normalized to internal format:
+**Fallback API**: `https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json`
+
+Used when the schedule API fails. Returns today's games with live scores and current records.
+
+**Data Transform**: Both APIs are normalized to internal format:
 ```javascript
 {
-  date: game.gameTimeUTC,
+  date: game.gameDateTimeUTC || game.gameTimeUTC,
   home_team: { id, city, name },
-  visitor_team: { id, city, name }
+  visitor_team: { id, city, name },
+  celtics_record: { wins, losses }
 }
 ```
 
